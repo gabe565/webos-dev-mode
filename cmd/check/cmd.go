@@ -1,7 +1,9 @@
 package check
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 
 	"gabe565.com/webos-dev-mode/internal/config"
@@ -16,6 +18,11 @@ func New() *cobra.Command {
 		RunE:  run,
 	}
 	return cmd
+}
+
+type Output struct {
+	ExpiresIn string    `json:"expires_in"`
+	ExpiresAt time.Time `json:"expires_at"`
 }
 
 func run(cmd *cobra.Command, _ []string) error {
@@ -35,7 +42,21 @@ func run(cmd *cobra.Command, _ []string) error {
 		return err
 	}
 
-	_, _ = fmt.Fprintln(cmd.OutOrStdout(), "Expires in", expiresIn)
-	_, _ = fmt.Fprintln(cmd.OutOrStdout(), "Expires at", time.Now().Add(expiresIn).Format(time.RFC3339))
+	output := Output{
+		ExpiresIn: expiresIn.String(),
+		ExpiresAt: time.Now().Add(expiresIn),
+	}
+
+	if conf.JSON {
+		if err := json.NewEncoder(os.Stdout).Encode(output); err != nil {
+			return err
+		}
+	} else {
+		_, _ = fmt.Fprintf(cmd.OutOrStdout(),
+			"Expires in %s\nExpires at %s\n",
+			output.ExpiresIn,
+			output.ExpiresAt.Format(time.RFC3339),
+		)
+	}
 	return nil
 }

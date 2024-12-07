@@ -6,6 +6,7 @@ type Config struct {
 	Token          string
 	RequestTimeout time.Duration
 	CronInterval   time.Duration
+	JSON           bool
 }
 
 func New() *Config {

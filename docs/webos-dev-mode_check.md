@@ -10,6 +10,7 @@ webos-dev-mode check [flags]
 
 ```
   -h, --help   help for check
+  -j, --json   Show output as JSON
 ```
 
 ### Options inherited from parent commands
