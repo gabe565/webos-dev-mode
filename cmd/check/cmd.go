@@ -25,7 +25,10 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 	cmd.SilenceUsage = true
 
-	client := webosdev.NewClient(webosdev.WithSessionToken(conf.Token))
+	client := webosdev.NewClient(
+		webosdev.WithSessionToken(conf.Token),
+		webosdev.WithTimeout(conf.RequestTimeout),
+	)
 
 	expiresIn, _, err := client.CheckExpiration(cmd.Context())
 	if err != nil {

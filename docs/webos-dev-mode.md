@@ -5,9 +5,10 @@ webOS dev mode tools
 ### Options
 
 ```
-  -h, --help           help for webos-dev-mode
-      --token string   Session token
-  -v, --version        version for webos-dev-mode
+  -h, --help                       help for webos-dev-mode
+      --request-timeout duration   HTTP request timeout (default 1m0s)
+      --token string               Session token
+  -v, --version                    version for webos-dev-mode
 ```
 
 ### SEE ALSO

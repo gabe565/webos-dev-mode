@@ -16,7 +16,8 @@ webos-dev-mode cron [flags]
 ### Options inherited from parent commands
 
 ```
-      --token string   Session token
+      --request-timeout duration   HTTP request timeout (default 1m0s)
+      --token string               Session token
 ```
 
 ### SEE ALSO

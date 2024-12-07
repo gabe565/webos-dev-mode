@@ -17,7 +17,10 @@ import (
 const defaultBaseURL = "https://developer.lge.com"
 
 func NewClient(opts ...Option) *Client {
-	c := &Client{baseURL: defaultBaseURL}
+	c := &Client{
+		client:  &http.Client{},
+		baseURL: defaultBaseURL,
+	}
 	for _, opt := range opts {
 		opt(c)
 	}
@@ -25,6 +28,7 @@ func NewClient(opts ...Option) *Client {
 }
 
 type Client struct {
+	client  *http.Client
 	baseURL string
 	token   string
 }
@@ -69,7 +73,7 @@ func (c *Client) request(ctx context.Context, p string) (*http.Response, error) 
 		return nil, err
 	}
 
-	return http.DefaultClient.Do(req)
+	return c.client.Do(req)
 }
 
 func (c *Client) ExtendSession(ctx context.Context) (*Response, *http.Response, error) {

@@ -1,7 +1,6 @@
 package cron
 
 import (
-	"context"
 	"log/slog"
 	"time"
 
@@ -26,17 +25,15 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 	cmd.SilenceUsage = true
 
-	if err := extend.Extend(cmd.Context(), conf.Token); err != nil {
+	if err := extend.Extend(cmd.Context(), conf); err != nil {
 		return err
 	}
 
 	ticker := time.NewTicker(conf.CronInterval)
 	for range ticker.C {
-		ctx, cancel := context.WithTimeout(cmd.Context(), time.Minute)
-		if err := extend.Extend(ctx, conf.Token); err != nil {
+		if err := extend.Extend(cmd.Context(), conf); err != nil {
 			slog.Error("Extend failed", "error", err)
 		}
-		cancel()
 	}
 	return nil
 }

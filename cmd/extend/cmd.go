@@ -28,13 +28,16 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 	cmd.SilenceUsage = true
 
-	return Extend(cmd.Context(), conf.Token)
+	return Extend(cmd.Context(), conf)
 }
 
 var ErrShortExpiration = errors.New("expiration time is too short")
 
-func Extend(ctx context.Context, token string) error {
-	client := webosdev.NewClient(webosdev.WithSessionToken(token))
+func Extend(ctx context.Context, conf *config.Config) error {
+	client := webosdev.NewClient(
+		webosdev.WithSessionToken(conf.Token),
+		webosdev.WithTimeout(conf.RequestTimeout),
+	)
 
 	if _, _, err := client.ExtendSession(ctx); err != nil {
 		return fmt.Errorf("failed to extend dev session: %w", err)
