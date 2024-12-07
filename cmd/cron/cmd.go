@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"time"
 
-	"gabe565.com/utils/must"
 	"gabe565.com/webos-dev-mode/cmd/extend"
+	"gabe565.com/webos-dev-mode/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -16,23 +16,24 @@ func New() *cobra.Command {
 		Short: "Extends dev mode session on a given interval",
 		RunE:  run,
 	}
-	cmd.Flags().Duration("interval", 24*time.Hour, "Extend cron interval")
 	return cmd
 }
 
 func run(cmd *cobra.Command, _ []string) error {
+	conf, err := config.Load(cmd)
+	if err != nil {
+		return err
+	}
 	cmd.SilenceUsage = true
-	interval := must.Must2(cmd.Flags().GetDuration("interval"))
-	token := must.Must2(cmd.Flags().GetString("token"))
 
-	if err := extend.Extend(cmd.Context(), token); err != nil {
+	if err := extend.Extend(cmd.Context(), conf.Token); err != nil {
 		return err
 	}
 
-	ticker := time.NewTicker(interval)
+	ticker := time.NewTicker(conf.CronInterval)
 	for range ticker.C {
 		ctx, cancel := context.WithTimeout(cmd.Context(), time.Minute)
-		if err := extend.Extend(ctx, token); err != nil {
+		if err := extend.Extend(ctx, conf.Token); err != nil {
 			slog.Error("Extend failed", "error", err)
 		}
 		cancel()

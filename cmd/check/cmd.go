@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"gabe565.com/utils/must"
+	"gabe565.com/webos-dev-mode/internal/config"
 	"gabe565.com/webos-dev-mode/pkg/webosdev"
 	"github.com/spf13/cobra"
 )
@@ -19,9 +19,13 @@ func New() *cobra.Command {
 }
 
 func run(cmd *cobra.Command, _ []string) error {
+	conf, err := config.Load(cmd)
+	if err != nil {
+		return err
+	}
 	cmd.SilenceUsage = true
-	token := must.Must2(cmd.Flags().GetString("token"))
-	client := webosdev.NewClient(webosdev.WithSessionToken(token))
+
+	client := webosdev.NewClient(webosdev.WithSessionToken(conf.Token))
 
 	expiresIn, _, err := client.CheckExpiration(cmd.Context())
 	if err != nil {
