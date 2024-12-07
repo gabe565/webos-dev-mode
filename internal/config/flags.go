@@ -10,7 +10,7 @@ const (
 
 func (c *Config) RegisterFlags(cmd *cobra.Command) {
 	fs := cmd.PersistentFlags()
-	fs.StringVar(&c.Token, FlagToken, c.Token, "Session token")
+	fs.StringVarP(&c.Token, FlagToken, "t", c.Token, "Session token")
 	fs.DurationVar(&c.RequestTimeout, FlagRequestTimeout, c.RequestTimeout, "HTTP request timeout")
 
 	if cmd, _, err := cmd.Find([]string{"cron"}); err == nil {
