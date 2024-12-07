@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+lg-dev-mode
+dist/
+/manpages/
+/completions/

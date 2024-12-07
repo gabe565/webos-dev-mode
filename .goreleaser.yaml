@@ -1,0 +1,164 @@
+version: 2
+project_name: lg-dev-mode
+before:
+  hooks:
+    - go run ./internal/generate/completions --date={{ .CommitDate }}
+    - go run ./internal/generate/manpages --version={{ .Version }} --date={{ .CommitDate }}
+builds:
+  - env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s
+      - -w
+      - -X main.version={{ .Version }}
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - "7"
+    mod_timestamp: "{{.CommitTimestamp}}"
+    ignore:
+      - goos: windows
+        goarch: arm
+        goarm: "7"
+archives:
+  - format: tar.gz
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+      - manpages/*
+      - completions/*
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs'
+      - '^test'
+  groups:
+    - title: Breaking Changes
+      order: 0
+      regexp: '\)!:'
+    - title: Features
+      order: 0
+      regexp: "(feat)"
+    - title: Fixes
+      order: 1
+      regexp: "(fix|perf)"
+    - title: Others
+      order: 999
+dockers:
+  - &dockers
+    image_templates:
+      - ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}-amd64
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    build_flag_templates:
+      - "--platform=linux/amd64"
+  - <<: *dockers
+    image_templates:
+      - ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}-armv7
+    goarch: arm
+    goarm: 7
+    build_flag_templates:
+      - "--platform=linux/arm/v7"
+  - <<: *dockers
+    image_templates:
+      - ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}-arm64v8
+    goarch: arm64
+    build_flag_templates:
+      - "--platform=linux/arm64/v8"
+docker_manifests:
+  - &docker_manifests
+    name_template: ghcr.io/gabe565/{{ .ProjectName }}:latest
+    image_templates:
+      - ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}-armv7
+      - ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}-arm64v8
+  - <<: *docker_manifests
+    name_template: ghcr.io/gabe565/{{ .ProjectName }}:{{ .Version }}
+  - <<: *docker_manifests
+    name_template: ghcr.io/gabe565/{{ .ProjectName }}:{{ .Major }}
+  - <<: *docker_manifests
+    name_template: ghcr.io/gabe565/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}
+brews:
+  - homepage: https://github.com/gabe565/go-lg-dev-mode
+    description: A command-line tool to extend the LG dev mode session timer
+    license: MIT
+    repository:
+      owner: gabe565
+      name: homebrew-tap
+    directory: Formula
+    install: |
+      bin.install "lg-dev-mode"
+      man1.install "manpages/lg-dev-mode.1.gz"
+      bash_completion.install "completions/lg-dev-mode.bash" => "lg-dev-mode"
+      zsh_completion.install "completions/lg-dev-mode.zsh" => "_lg-dev-mode"
+      fish_completion.install "completions/lg-dev-mode.fish"
+nfpms:
+  - id: packages
+    vendor: Gabe Cook
+    homepage: https://github.com/gabe565/go-lg-dev-mode
+    description: A command-line tool to extend the LG dev mode session timer
+    license: MIT
+    maintainer: Gabe Cook <gabe565@gmail.com>
+    formats:
+      - deb
+      - rpm
+    contents:
+      - src: ./manpages/
+        dst: /usr/share/man/man1
+        file_info:
+          mode: 0644
+      - src: ./completions/lg-dev-mode.bash
+        dst: /usr/share/bash-completion/completions/lg-dev-mode
+        file_info:
+          mode: 0644
+      - src: ./completions/lg-dev-mode.fish
+        dst: /usr/share/fish/vendor_completions.d/lg-dev-mode.fish
+        file_info:
+          mode: 0644
+      - src: ./completions/lg-dev-mode.zsh
+        dst:  /usr/share/zsh/vendor-completions/_lg-dev-mode
+        file_info:
+          mode: 0644
+publishers:
+  - name: fury.io
+    ids:
+      - packages
+    dir: "{{ dir .ArtifactPath }}"
+    cmd: curl -sf -Fpackage=@{{ .ArtifactName }} https://{{ .Env.FURY_TOKEN }}@push.fury.io/gabe565/
+aurs:
+  - name: lg-dev-mode-bin
+    homepage: https://github.com/gabe565/go-lg-dev-mode
+    description: A command-line tool to extend the LG dev mode session timer
+    maintainers:
+      - Gabe Cook <gabe565@gmail.com>
+    license: MIT
+    private_key: '{{ .Env.AUR_SSH_KEY }}'
+    git_url: ssh://aur@aur.archlinux.org/lg-dev-mode-bin.git
+    skip_upload: auto
+    package: |-
+      # bin
+      install -Dm755 "./lg-dev-mode" "${pkgdir}/usr/bin/lg-dev-mode"
+      # license
+      install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/lg-dev-mode/LICENSE"
+      # man pages
+      install -Dm644 "./manpages/lg-dev-mode.1.gz" "${pkgdir}/usr/share/man/man1/lg-dev-mode.1.gz"
+      # completions
+      install -Dm644 "./completions/lg-dev-mode.bash" "${pkgdir}/usr/share/bash-completion/completions/lg-dev-mode"
+      install -Dm644 "./completions/lg-dev-mode.zsh" "${pkgdir}/usr/share/zsh/site-functions/_lg-dev-mode"
+      install -Dm644 "./completions/lg-dev-mode.fish" "${pkgdir}/usr/share/fish/vendor_completions.d/lg-dev-mode.fish"
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
