@@ -1,4 +1,4 @@
-module gabe565.com/lg-dev-mode
+module gabe565.com/webos-dev-mode
 
 go 1.23.4
 

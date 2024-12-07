@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"gabe565.com/lg-dev-mode/cmd"
+	"gabe565.com/webos-dev-mode/cmd"
 	"github.com/spf13/cobra/doc"
 	flag "github.com/spf13/pflag"
 )

@@ -1,6 +1,6 @@
 .DS_Store
 .idea/
-lg-dev-mode
+webos-dev-mode
 dist/
 /manpages/
 /completions/

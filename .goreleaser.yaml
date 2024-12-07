@@ -1,5 +1,5 @@
 version: 2
-project_name: lg-dev-mode
+project_name: webos-dev-mode
 before:
   hooks:
     - go run ./internal/generate/completions --date={{ .CommitDate }}
@@ -92,24 +92,24 @@ docker_manifests:
   - <<: *docker_manifests
     name_template: ghcr.io/gabe565/{{ .ProjectName }}:{{ .Major }}.{{ .Minor }}
 brews:
-  - homepage: https://github.com/gabe565/go-lg-dev-mode
-    description: A command-line tool to extend the LG dev mode session timer
+  - homepage: https://github.com/gabe565/webos-dev-mode
+    description: A command-line tool to extend the webOS dev mode session timer
     license: MIT
     repository:
       owner: gabe565
       name: homebrew-tap
     directory: Formula
     install: |
-      bin.install "lg-dev-mode"
-      man1.install "manpages/lg-dev-mode.1.gz"
-      bash_completion.install "completions/lg-dev-mode.bash" => "lg-dev-mode"
-      zsh_completion.install "completions/lg-dev-mode.zsh" => "_lg-dev-mode"
-      fish_completion.install "completions/lg-dev-mode.fish"
+      bin.install "webos-dev-mode"
+      man1.install "manpages/webos-dev-mode.1.gz"
+      bash_completion.install "completions/webos-dev-mode.bash" => "webos-dev-mode"
+      zsh_completion.install "completions/webos-dev-mode.zsh" => "_webos-dev-mode"
+      fish_completion.install "completions/webos-dev-mode.fish"
 nfpms:
   - id: packages
     vendor: Gabe Cook
-    homepage: https://github.com/gabe565/go-lg-dev-mode
-    description: A command-line tool to extend the LG dev mode session timer
+    homepage: https://github.com/gabe565/webos-dev-mode
+    description: A command-line tool to extend the webOS dev mode session timer
     license: MIT
     maintainer: Gabe Cook <gabe565@gmail.com>
     formats:
@@ -120,16 +120,16 @@ nfpms:
         dst: /usr/share/man/man1
         file_info:
           mode: 0644
-      - src: ./completions/lg-dev-mode.bash
-        dst: /usr/share/bash-completion/completions/lg-dev-mode
+      - src: ./completions/webos-dev-mode.bash
+        dst: /usr/share/bash-completion/completions/webos-dev-mode
         file_info:
           mode: 0644
-      - src: ./completions/lg-dev-mode.fish
-        dst: /usr/share/fish/vendor_completions.d/lg-dev-mode.fish
+      - src: ./completions/webos-dev-mode.fish
+        dst: /usr/share/fish/vendor_completions.d/webos-dev-mode.fish
         file_info:
           mode: 0644
-      - src: ./completions/lg-dev-mode.zsh
-        dst:  /usr/share/zsh/vendor-completions/_lg-dev-mode
+      - src: ./completions/webos-dev-mode.zsh
+        dst:  /usr/share/zsh/vendor-completions/_webos-dev-mode
         file_info:
           mode: 0644
 publishers:
@@ -139,26 +139,26 @@ publishers:
     dir: "{{ dir .ArtifactPath }}"
     cmd: curl -sf -Fpackage=@{{ .ArtifactName }} https://{{ .Env.FURY_TOKEN }}@push.fury.io/gabe565/
 aurs:
-  - name: lg-dev-mode-bin
-    homepage: https://github.com/gabe565/go-lg-dev-mode
-    description: A command-line tool to extend the LG dev mode session timer
+  - name: webos-dev-mode-bin
+    homepage: https://github.com/gabe565/webos-dev-mode
+    description: A command-line tool to extend the webOS dev mode session timer
     maintainers:
       - Gabe Cook <gabe565@gmail.com>
     license: MIT
     private_key: '{{ .Env.AUR_SSH_KEY }}'
-    git_url: ssh://aur@aur.archlinux.org/lg-dev-mode-bin.git
+    git_url: ssh://aur@aur.archlinux.org/webos-dev-mode-bin.git
     skip_upload: auto
     package: |-
       # bin
-      install -Dm755 "./lg-dev-mode" "${pkgdir}/usr/bin/lg-dev-mode"
+      install -Dm755 "./webos-dev-mode" "${pkgdir}/usr/bin/webos-dev-mode"
       # license
-      install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/lg-dev-mode/LICENSE"
+      install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/webos-dev-mode/LICENSE"
       # man pages
-      install -Dm644 "./manpages/lg-dev-mode.1.gz" "${pkgdir}/usr/share/man/man1/lg-dev-mode.1.gz"
+      install -Dm644 "./manpages/webos-dev-mode.1.gz" "${pkgdir}/usr/share/man/man1/webos-dev-mode.1.gz"
       # completions
-      install -Dm644 "./completions/lg-dev-mode.bash" "${pkgdir}/usr/share/bash-completion/completions/lg-dev-mode"
-      install -Dm644 "./completions/lg-dev-mode.zsh" "${pkgdir}/usr/share/zsh/site-functions/_lg-dev-mode"
-      install -Dm644 "./completions/lg-dev-mode.fish" "${pkgdir}/usr/share/fish/vendor_completions.d/lg-dev-mode.fish"
+      install -Dm644 "./completions/webos-dev-mode.bash" "${pkgdir}/usr/share/bash-completion/completions/webos-dev-mode"
+      install -Dm644 "./completions/webos-dev-mode.zsh" "${pkgdir}/usr/share/zsh/site-functions/_webos-dev-mode"
+      install -Dm644 "./completions/webos-dev-mode.fish" "${pkgdir}/usr/share/fish/vendor_completions.d/webos-dev-mode.fish"
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com

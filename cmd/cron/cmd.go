@@ -5,15 +5,15 @@ import (
 	"log/slog"
 	"time"
 
-	"gabe565.com/lg-dev-mode/cmd/extend"
 	"gabe565.com/utils/must"
+	"gabe565.com/webos-dev-mode/cmd/extend"
 	"github.com/spf13/cobra"
 )
 
 func New() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "cron",
-		Short: "Extends LG dev mode session on a given interval",
+		Short: "Extends dev mode session on a given interval",
 		RunE:  run,
 	}
 	cmd.Flags().Duration("interval", 24*time.Hour, "Extend cron interval")

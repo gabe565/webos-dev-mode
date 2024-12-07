@@ -7,15 +7,15 @@ import (
 	"log/slog"
 	"time"
 
-	"gabe565.com/lg-dev-mode/pkg/lgdevmode"
 	"gabe565.com/utils/must"
+	"gabe565.com/webos-dev-mode/pkg/webosdev"
 	"github.com/spf13/cobra"
 )
 
 func New() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "extend",
-		Short: "Extend an LG dev mode session",
+		Short: "Extend a dev mode session",
 		RunE:  run,
 	}
 	return cmd
@@ -30,7 +30,7 @@ func run(cmd *cobra.Command, _ []string) error {
 var ErrShortExpiration = errors.New("expiration time is too short")
 
 func Extend(ctx context.Context, token string) error {
-	client := lgdevmode.New(lgdevmode.WithSessionToken(token))
+	client := webosdev.NewClient(webosdev.WithSessionToken(token))
 
 	if _, _, err := client.ExtendSession(ctx); err != nil {
 		return fmt.Errorf("failed to extend dev session: %w", err)

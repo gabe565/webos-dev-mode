@@ -1,9 +1,9 @@
-## lg-dev-mode extend
+## webos-dev-mode extend
 
-Extend an LG dev mode session
+Extend a dev mode session
 
 ```
-lg-dev-mode extend [flags]
+webos-dev-mode extend [flags]
 ```
 
 ### Options
@@ -20,5 +20,5 @@ lg-dev-mode extend [flags]
 
 ### SEE ALSO
 
-* [lg-dev-mode](lg-dev-mode.md)	 - LG dev mode tools
+* [webos-dev-mode](webos-dev-mode.md)	 - webOS dev mode tools
 

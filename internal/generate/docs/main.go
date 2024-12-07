@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"gabe565.com/lg-dev-mode/cmd"
 	"gabe565.com/utils/cobrax"
+	"gabe565.com/webos-dev-mode/cmd"
 	"github.com/spf13/cobra/doc"
 )
 

@@ -1,4 +1,4 @@
-package lgdevmode
+package webosdev
 
 import (
 	"context"
@@ -16,7 +16,7 @@ import (
 
 const defaultBaseURL = "https://developer.lge.com"
 
-func New(opts ...Option) *Client {
+func NewClient(opts ...Option) *Client {
 	c := &Client{baseURL: defaultBaseURL}
 	for _, opt := range opts {
 		opt(c)

@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"gabe565.com/lg-dev-mode/cmd"
 	"gabe565.com/utils/cobrax"
+	"gabe565.com/webos-dev-mode/cmd"
 	flag "github.com/spf13/pflag"
 )
 

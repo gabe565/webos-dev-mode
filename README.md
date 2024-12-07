@@ -1,6 +1,6 @@
-# LG Dev Mode CLI
+# webOS Dev Mode CLI
 
-A command-line tool to extend the LG dev mode session timer.
+A command-line tool to extend the webOS dev mode session timer.
 
 ## Installation
 
@@ -9,10 +9,10 @@ A command-line tool to extend the LG dev mode session timer.
 <details>
   <summary>Click to expand</summary>
 
-A Docker image is available at [ghcr.io/gabe565/lg-dev-mode](https://ghcr.io/gabe565/lg-dev-mode)
+A Docker image is available at [ghcr.io/gabe565/webos-dev-mode](https://ghcr.io/gabe565/webos-dev-mode)
 
 ```shell
-sudo docker run --rm -it ghcr.io/gabe565/lg-dev-mode cron --token SESSION_TOKEN
+sudo docker run --rm -it ghcr.io/gabe565/webos-dev-mode cron --token SESSION_TOKEN
 ```
 </details>
 
@@ -21,9 +21,9 @@ sudo docker run --rm -it ghcr.io/gabe565/lg-dev-mode cron --token SESSION_TOKEN
 <details>
   <summary>Click to expand</summary>
 
-Install lg-dev-mode from [gabe565/homebrew-tap](https://github.com/gabe565/homebrew-tap):
+Install webos-dev-mode from [gabe565/homebrew-tap](https://github.com/gabe565/homebrew-tap):
 ```shell
-brew install gabe565/tap/lg-dev-mode
+brew install gabe565/tap/webos-dev-mode
 ```
 </details>
 
@@ -47,9 +47,9 @@ brew install gabe565/tap/lg-dev-mode
    sudo apt update
    ```
 
-4. Install lg-dev-mode
+4. Install webos-dev-mode
    ```shell
-   sudo apt install lg-dev-mode
+   sudo apt install webos-dev-mode
    ```
 </details>
 
@@ -72,9 +72,9 @@ brew install gabe565/tap/lg-dev-mode
    gpgcheck=0
    ```
 
-3. Install lg-dev-mode
+3. Install webos-dev-mode
    ```shell
-   sudo dnf install lg-dev-mode
+   sudo dnf install webos-dev-mode
    ```
 </details>
 
@@ -83,7 +83,7 @@ brew install gabe565/tap/lg-dev-mode
 <details>
   <summary>Click to expand</summary>
 
-Install [lg-dev-mode-bin](https://aur.archlinux.org/packages/lg-dev-mode-bin) with your [AUR helper](https://wiki.archlinux.org/index.php/AUR_helpers) of choice.
+Install [webos-dev-mode-bin](https://aur.archlinux.org/packages/webos-dev-mode-bin) with your [AUR helper](https://wiki.archlinux.org/index.php/AUR_helpers) of choice.
 </details>
 
 ### Manual Installation
@@ -91,22 +91,22 @@ Install [lg-dev-mode-bin](https://aur.archlinux.org/packages/lg-dev-mode-bin) wi
 <details>
   <summary>Click to expand</summary>
 
-Download and run the [latest release binary](https://github.com/gabe565/lg-dev-mode/releases/latest) for your system and architecture.
+Download and run the [latest release binary](https://github.com/gabe565/webos-dev-mode/releases/latest) for your system and architecture.
 </details>
 
 ## Usage
 
-- To extend the LG dev mode session:
+- To extend the webOS dev mode session:
   ```shell
-  lg-dev-mode extend --token SESSION_TOKEN
+  webos-dev-mode extend --token SESSION_TOKEN
   ```
-- To run a task which will extend the LG dev mode session once per day:
+- To run a task which will extend the webOS dev mode session once per day:
   ```shell
-  lg-dev-mode cron --token SESSION_TOKEN
+  webos-dev-mode cron --token SESSION_TOKEN
   ```
 - To check the current session expiration:
   ```shell
-  lg-dev-mode check --token SESSION_TOKEN
+  webos-dev-mode check --token SESSION_TOKEN
   ```
 
-For full command-line reference, see [docs](docs/lg-dev-mode.md).
+For full command-line reference, see [docs](docs/webos-dev-mode.md).

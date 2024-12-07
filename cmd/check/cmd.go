@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"gabe565.com/lg-dev-mode/pkg/lgdevmode"
 	"gabe565.com/utils/must"
+	"gabe565.com/webos-dev-mode/pkg/webosdev"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ func New() *cobra.Command {
 func run(cmd *cobra.Command, _ []string) error {
 	cmd.SilenceUsage = true
 	token := must.Must2(cmd.Flags().GetString("token"))
-	client := lgdevmode.New(lgdevmode.WithSessionToken(token))
+	client := webosdev.NewClient(webosdev.WithSessionToken(token))
 
 	expiresIn, _, err := client.CheckExpiration(cmd.Context())
 	if err != nil {

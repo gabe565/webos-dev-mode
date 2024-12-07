@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"os"
 
-	"gabe565.com/lg-dev-mode/cmd"
 	"gabe565.com/utils/cobrax"
 	"gabe565.com/utils/httpx"
+	"gabe565.com/webos-dev-mode/cmd"
 )
 
 var version = "beta"

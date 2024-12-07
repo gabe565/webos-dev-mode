@@ -1,4 +1,4 @@
-package lgdevmode
+package webosdev
 
 type Option func(c *Client)
 

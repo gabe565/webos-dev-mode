@@ -1,9 +1,9 @@
-## lg-dev-mode cron
+## webos-dev-mode cron
 
-Extends LG dev mode session on a given interval
+Extends dev mode session on a given interval
 
 ```
-lg-dev-mode cron [flags]
+webos-dev-mode cron [flags]
 ```
 
 ### Options
@@ -21,5 +21,5 @@ lg-dev-mode cron [flags]
 
 ### SEE ALSO
 
-* [lg-dev-mode](lg-dev-mode.md)	 - LG dev mode tools
+* [webos-dev-mode](webos-dev-mode.md)	 - webOS dev mode tools
 

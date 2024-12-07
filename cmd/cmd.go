@@ -4,25 +4,25 @@ import (
 	"errors"
 	"os"
 
-	"gabe565.com/lg-dev-mode/cmd/check"
-	"gabe565.com/lg-dev-mode/cmd/cron"
-	"gabe565.com/lg-dev-mode/cmd/extend"
 	"gabe565.com/utils/cobrax"
 	"gabe565.com/utils/must"
+	"gabe565.com/webos-dev-mode/cmd/check"
+	"gabe565.com/webos-dev-mode/cmd/cron"
+	"gabe565.com/webos-dev-mode/cmd/extend"
 	"github.com/spf13/cobra"
 )
 
 func New(opts ...cobrax.Option) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "lg-dev-mode",
-		Short:             "LG dev mode tools",
+		Use:               "webos-dev-mode",
+		Short:             "webOS dev mode tools",
 		SilenceErrors:     true,
 		PersistentPreRunE: preRun,
 
 		DisableAutoGenTag: true,
 	}
 	cmd.AddCommand(extend.New(), cron.New(), check.New())
-	cmd.PersistentFlags().String("token", os.Getenv("LG_TOKEN"), "Session token")
+	cmd.PersistentFlags().String("token", os.Getenv("WEBOS_TOKEN"), "Session token")
 	for _, opt := range opts {
 		opt(cmd)
 	}

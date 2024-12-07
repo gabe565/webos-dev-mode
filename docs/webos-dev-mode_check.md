@@ -1,9 +1,9 @@
-## lg-dev-mode check
+## webos-dev-mode check
 
 Check the current dev mode session expiration
 
 ```
-lg-dev-mode check [flags]
+webos-dev-mode check [flags]
 ```
 
 ### Options
@@ -20,5 +20,5 @@ lg-dev-mode check [flags]
 
 ### SEE ALSO
 
-* [lg-dev-mode](lg-dev-mode.md)	 - LG dev mode tools
+* [webos-dev-mode](webos-dev-mode.md)	 - webOS dev mode tools
 
