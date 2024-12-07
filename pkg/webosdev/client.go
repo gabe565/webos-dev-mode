@@ -1,3 +1,4 @@
+// Package webosdev provides a client for interacting with the webOS developer API.
 package webosdev
 
 import (
@@ -16,6 +17,8 @@ import (
 
 const defaultBaseURL = "https://developer.lge.com"
 
+// NewClient creates a Client for interacting with the webOS developer API.
+// Optional configuration can be provided via Option functions.
 func NewClient(opts ...Option) *Client {
 	c := &Client{
 		client:  &http.Client{},
@@ -27,18 +30,21 @@ func NewClient(opts ...Option) *Client {
 	return c
 }
 
+// Client represents a client for the webOS developer API.
 type Client struct {
 	client  *http.Client
 	baseURL string
 	token   string
 }
 
+// Response represents the structure of a webOS developer API response.
 type Response struct {
 	Result       string `json:"result"`
 	ErrorCode    string `json:"errorCode"`
 	ErrorMessage string `json:"errorMsg"`
 }
 
+// ErrRequestFailed indicates that an API request returned an error.
 var ErrRequestFailed = errors.New("request failed")
 
 func (c *Client) request(ctx context.Context, p string) (*Response, *http.Response, error) {
@@ -81,12 +87,17 @@ func (c *Client) request(ctx context.Context, p string) (*Response, *http.Respon
 	return decoded, res, nil
 }
 
+// ExtendSession extends the current webOS developer mode session by making an API call.
+// It returns the decoded response, the raw HTTP response, and any error encountered.
 func (c *Client) ExtendSession(ctx context.Context) (*Response, *http.Response, error) {
 	return c.request(ctx, "/secure/ResetDevModeSession.dev")
 }
 
+// ErrInvalidTimestamp indicates that the timestamp returned by the API could not be parsed.
 var ErrInvalidTimestamp = errors.New("invalid timestamp")
 
+// CheckExpiration checks the remaining time in the current webOS developer session.
+// It parses the response timestamp and returns the remaining duration, the raw HTTP response, and any error encountered.
 func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, *http.Response, error) {
 	decoded, res, err := c.request(ctx, "/secure/CheckDevModeSession.dev")
 	if err != nil {
