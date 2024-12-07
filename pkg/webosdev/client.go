@@ -41,7 +41,30 @@ type Response struct {
 
 var ErrRequestFailed = errors.New("request failed")
 
-func checkResponse(res *http.Response) (*Response, *http.Response, error) {
+func (c *Client) request(ctx context.Context, p string) (*Response, *http.Response, error) {
+	u, err := url.Parse(c.baseURL)
+	if err != nil {
+		return nil, nil, err
+	}
+	u.Path = path.Join(u.Path, p)
+	q := u.Query()
+	q.Set("sessionToken", c.token)
+	u.RawQuery = q.Encode()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	res, err := c.client.Do(req)
+	if err != nil {
+		return nil, res, err
+	}
+	defer func() {
+		_, _ = io.Copy(io.Discard, res.Body)
+		_ = res.Body.Close()
+	}()
+
 	if res.StatusCode != http.StatusOK {
 		return nil, res, fmt.Errorf("%w: %s", ErrRequestFailed, res.Status)
 	}
@@ -58,50 +81,14 @@ func checkResponse(res *http.Response) (*Response, *http.Response, error) {
 	return decoded, res, nil
 }
 
-func (c *Client) request(ctx context.Context, p string) (*http.Response, error) {
-	u, err := url.Parse(c.baseURL)
-	if err != nil {
-		return nil, err
-	}
-	u.Path = path.Join(u.Path, p)
-	q := u.Query()
-	q.Set("sessionToken", c.token)
-	u.RawQuery = q.Encode()
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Do(req)
-}
-
 func (c *Client) ExtendSession(ctx context.Context) (*Response, *http.Response, error) {
-	res, err := c.request(ctx, "/secure/ResetDevModeSession.dev")
-	if err != nil {
-		return nil, res, err
-	}
-	defer func() {
-		_, _ = io.Copy(io.Discard, res.Body)
-		_ = res.Body.Close()
-	}()
-
-	return checkResponse(res)
+	return c.request(ctx, "/secure/ResetDevModeSession.dev")
 }
 
 var ErrInvalidTimestamp = errors.New("invalid timestamp")
 
 func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, *http.Response, error) {
-	res, err := c.request(ctx, "/secure/CheckDevModeSession.dev")
-	if err != nil {
-		return 0, res, err
-	}
-	defer func() {
-		_, _ = io.Copy(io.Discard, res.Body)
-		_ = res.Body.Close()
-	}()
-
-	decoded, res, err := checkResponse(res)
+	decoded, res, err := c.request(ctx, "/secure/CheckDevModeSession.dev")
 	if err != nil {
 		return 0, res, err
 	}
