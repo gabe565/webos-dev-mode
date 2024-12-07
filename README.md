@@ -109,4 +109,6 @@ Download and run the [latest release binary](https://github.com/gabe565/webos-de
   webos-dev-mode check --token SESSION_TOKEN
   ```
 
+Flag values can also be set using environment variables. To do this, capitalize all characters, replace `-` with `_`, and prefix with `WEBOS_`. For example, `--token=example` would become `WEBOS_TOKEN=example`, and `--request-timeout=10m` would become `WEBOS_REQUEST_TIMEOUT=10m`.
+
 For full command-line reference, see [docs](docs/webos-dev-mode.md).
