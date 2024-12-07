@@ -47,10 +47,10 @@ type Response struct {
 // ErrRequestFailed indicates that an API request returned an error.
 var ErrRequestFailed = errors.New("request failed")
 
-func (c *Client) request(ctx context.Context, p string) (*Response, *http.Response, error) {
+func (c *Client) request(ctx context.Context, p string) (*Response, error) {
 	u, err := url.Parse(c.baseURL)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	u.Path = path.Join(u.Path, p)
 	q := u.Query()
@@ -59,12 +59,12 @@ func (c *Client) request(ctx context.Context, p string) (*Response, *http.Respon
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	res, err := c.client.Do(req)
 	if err != nil {
-		return nil, res, err
+		return nil, err
 	}
 	defer func() {
 		_, _ = io.Copy(io.Discard, res.Body)
@@ -72,48 +72,49 @@ func (c *Client) request(ctx context.Context, p string) (*Response, *http.Respon
 	}()
 
 	if res.StatusCode != http.StatusOK {
-		return nil, res, fmt.Errorf("%w: %s", ErrRequestFailed, res.Status)
+		return nil, fmt.Errorf("%w: %s", ErrRequestFailed, res.Status)
 	}
 
 	var decoded *Response
 	if err := json.NewDecoder(res.Body).Decode(&decoded); err != nil {
-		return decoded, res, err
+		return decoded, err
 	}
 
 	if decoded.Result != "success" {
-		return decoded, res, fmt.Errorf("%w: %s", ErrRequestFailed, decoded.ErrorMessage)
+		return decoded, fmt.Errorf("%w: %s", ErrRequestFailed, decoded.ErrorMessage)
 	}
 
-	return decoded, res, nil
+	return decoded, nil
 }
 
 // ExtendSession extends the current webOS developer mode session by making an API call.
-// It returns the decoded response, the raw HTTP response, and any error encountered.
-func (c *Client) ExtendSession(ctx context.Context) (*Response, *http.Response, error) {
-	return c.request(ctx, "/secure/ResetDevModeSession.dev")
+// It returns the decoded response and any error encountered.
+func (c *Client) ExtendSession(ctx context.Context) error {
+	_, err := c.request(ctx, "/secure/ResetDevModeSession.dev")
+	return err
 }
 
 // ErrInvalidTimestamp indicates that the timestamp returned by the API could not be parsed.
 var ErrInvalidTimestamp = errors.New("invalid timestamp")
 
 // CheckExpiration checks the remaining time in the current webOS developer session.
-// It parses the response timestamp and returns the remaining duration, the raw HTTP response, and any error encountered.
-func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, *http.Response, error) {
-	decoded, res, err := c.request(ctx, "/secure/CheckDevModeSession.dev")
+// It parses the response timestamp and returns the remaining duration and any error encountered.
+func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, error) {
+	decoded, err := c.request(ctx, "/secure/CheckDevModeSession.dev")
 	if err != nil {
-		return 0, res, err
+		return 0, err
 	}
 
 	parts := strings.Split(decoded.ErrorMessage, ":")
 	if len(parts) != 3 {
-		return 0, res, fmt.Errorf("%w: %s", ErrInvalidTimestamp, decoded.ErrorMessage)
+		return 0, fmt.Errorf("%w: %s", ErrInvalidTimestamp, decoded.ErrorMessage)
 	}
 
 	var expiration time.Duration
 	for i, part := range parts {
 		v, err := strconv.Atoi(part)
 		if err != nil {
-			return 0, res, err
+			return 0, err
 		}
 		switch i {
 		case 0:
@@ -125,5 +126,5 @@ func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, *http.Resp
 		}
 	}
 
-	return expiration, res, nil
+	return expiration, nil
 }

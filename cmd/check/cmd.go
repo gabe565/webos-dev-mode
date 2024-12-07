@@ -30,7 +30,7 @@ func run(cmd *cobra.Command, _ []string) error {
 		webosdev.WithTimeout(conf.RequestTimeout),
 	)
 
-	expiresIn, _, err := client.CheckExpiration(cmd.Context())
+	expiresIn, err := client.CheckExpiration(cmd.Context())
 	if err != nil {
 		return err
 	}

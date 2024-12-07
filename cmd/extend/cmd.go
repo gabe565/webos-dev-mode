@@ -39,11 +39,11 @@ func Extend(ctx context.Context, conf *config.Config) error {
 		webosdev.WithTimeout(conf.RequestTimeout),
 	)
 
-	if _, _, err := client.ExtendSession(ctx); err != nil {
+	if err := client.ExtendSession(ctx); err != nil {
 		return fmt.Errorf("failed to extend dev session: %w", err)
 	}
 
-	expiration, _, err := client.CheckExpiration(ctx)
+	expiration, err := client.CheckExpiration(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to check expiration: %w", err)
 	}
