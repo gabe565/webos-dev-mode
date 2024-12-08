@@ -2,7 +2,7 @@ package check
 
 import (
 	"encoding/json"
-	"fmt"
+	"io"
 	"os"
 	"time"
 
@@ -52,10 +52,9 @@ func run(cmd *cobra.Command, _ []string) error {
 			return err
 		}
 	} else {
-		_, _ = fmt.Fprintf(cmd.OutOrStdout(),
-			"Expires in %s\nExpires at %s\n",
-			output.ExpiresIn,
-			output.ExpiresAt.Format(time.RFC3339),
+		_, _ = io.WriteString(cmd.OutOrStdout(),
+			"Expires in "+output.ExpiresIn+"\n"+
+				"Expires at "+output.ExpiresAt.Format(time.RFC3339)+"\n",
 		)
 	}
 	return nil
