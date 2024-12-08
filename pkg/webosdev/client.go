@@ -110,21 +110,22 @@ func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, error) {
 		return 0, fmt.Errorf("%w: %s", ErrInvalidTimestamp, decoded.ErrorMessage)
 	}
 
-	var expiration time.Duration
-	for i, part := range parts {
-		v, err := strconv.Atoi(part)
-		if err != nil {
-			return 0, err
-		}
-		switch i {
-		case 0:
-			expiration += time.Duration(v) * time.Hour
-		case 1:
-			expiration += time.Duration(v) * time.Minute
-		case 2:
-			expiration += time.Duration(v) * time.Second
-		}
+	hours, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return 0, err
 	}
 
-	return expiration, nil
+	minutes, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return 0, err
+	}
+
+	seconds, err := strconv.Atoi(parts[2])
+	if err != nil {
+		return 0, err
+	}
+
+	return time.Duration(hours)*time.Hour +
+		time.Duration(minutes)*time.Minute +
+		time.Duration(seconds)*time.Second, nil
 }
