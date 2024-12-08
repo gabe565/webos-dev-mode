@@ -96,6 +96,13 @@ Download and run the [latest release binary](https://github.com/gabe565/webos-de
 
 ## Usage
 
+1. Set up the webOS dev mode by following the [webosbrew](https://www.webosbrew.org/devmode/) guide.
+3. Fetch the session token:
+   ```shell
+   ares-novacom --run 'cat /var/luna/preferences/devmode_enabled; echo'
+   ```
+
+Now you are ready to run `webos-dev-mode` commands.
 - To extend the webOS dev mode session:
   ```shell
   webos-dev-mode extend --token SESSION_TOKEN
