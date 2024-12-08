@@ -80,7 +80,7 @@ func (c *Client) request(ctx context.Context, p string) (*Response, error) {
 		return decoded, err
 	}
 
-	if decoded.Result != "success" {
+	if decoded.Result != "success" || decoded.ErrorCode != "200" {
 		return decoded, fmt.Errorf("%w: %s", ErrRequestFailed, decoded.ErrorMessage)
 	}
 
