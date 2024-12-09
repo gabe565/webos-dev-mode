@@ -3,7 +3,6 @@ package check
 import (
 	"encoding/json"
 	"io"
-	"os"
 	"time"
 
 	"gabe565.com/webos-dev-mode/internal/config"
@@ -48,7 +47,7 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 
 	if conf.JSON {
-		if err := json.NewEncoder(os.Stdout).Encode(output); err != nil {
+		if err := json.NewEncoder(cmd.OutOrStdout()).Encode(output); err != nil {
 			return err
 		}
 	} else {
