@@ -21,7 +21,11 @@ func WithSessionToken(token string) Option {
 // The default base URL is "https://developer.lge.com".
 func WithBaseURL(baseURL string) Option {
 	return func(c *Client) {
-		c.baseURL = baseURL
+		if baseURL == "" {
+			c.baseURL = defaultBaseURL
+		} else {
+			c.baseURL = baseURL
+		}
 	}
 }
 
