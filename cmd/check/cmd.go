@@ -5,9 +5,7 @@ import (
 	"io"
 	"time"
 
-	"gabe565.com/utils/cobrax"
 	"gabe565.com/webos-dev-mode/internal/config"
-	"gabe565.com/webos-dev-mode/pkg/webosdev"
 	"github.com/spf13/cobra"
 )
 
@@ -32,13 +30,7 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 	cmd.SilenceUsage = true
 
-	client := webosdev.NewClient(
-		webosdev.WithSessionToken(conf.Token),
-		webosdev.WithTimeout(conf.RequestTimeout),
-		webosdev.WithUserAgent(cobrax.BuildUserAgent(cmd)),
-	)
-
-	expiresIn, err := client.CheckExpiration(cmd.Context())
+	expiresIn, err := conf.NewClient(cmd).CheckExpiration(cmd.Context())
 	if err != nil {
 		return err
 	}

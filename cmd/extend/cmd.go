@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"time"
 
-	"gabe565.com/utils/cobrax"
 	"gabe565.com/webos-dev-mode/internal/config"
 	"gabe565.com/webos-dev-mode/pkg/webosdev"
 	"github.com/spf13/cobra"
@@ -29,18 +28,12 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 	cmd.SilenceUsage = true
 
-	return Extend(cmd.Context(),
-		webosdev.WithSessionToken(conf.Token),
-		webosdev.WithTimeout(conf.RequestTimeout),
-		webosdev.WithUserAgent(cobrax.BuildUserAgent(cmd)),
-	)
+	return Extend(cmd.Context(), conf.NewClient(cmd))
 }
 
 var ErrShortExpiration = errors.New("expiration time is too short")
 
-func Extend(ctx context.Context, opts ...webosdev.Option) error {
-	client := webosdev.NewClient(opts...)
-
+func Extend(ctx context.Context, client *webosdev.Client) error {
 	if err := client.ExtendSession(ctx); err != nil {
 		return fmt.Errorf("failed to extend dev session: %w", err)
 	}
