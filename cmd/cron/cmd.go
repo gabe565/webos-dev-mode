@@ -30,16 +30,20 @@ func run(cmd *cobra.Command, _ []string) error {
 	timer := time.NewTimer(0)
 	defer timer.Stop()
 
-	for range timer.C {
-		timer.Reset(conf.CronInterval)
+	for {
+		select {
+		case <-cmd.Context().Done():
+			return cmd.Context().Err()
+		case <-timer.C:
+			timer.Reset(conf.CronInterval)
 
-		if err := extend.Extend(cmd.Context(),
-			webosdev.WithSessionToken(conf.Token),
-			webosdev.WithTimeout(conf.RequestTimeout),
-			webosdev.WithUserAgent(cobrax.BuildUserAgent(cmd)),
-		); err != nil {
-			slog.Error("Extend failed", "error", err)
+			if err := extend.Extend(cmd.Context(),
+				webosdev.WithSessionToken(conf.Token),
+				webosdev.WithTimeout(conf.RequestTimeout),
+				webosdev.WithUserAgent(cobrax.BuildUserAgent(cmd)),
+			); err != nil {
+				slog.Error("Extend failed", "error", err)
+			}
 		}
 	}
-	return nil
 }
