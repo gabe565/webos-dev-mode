@@ -32,9 +32,10 @@ func NewClient(opts ...Option) *Client {
 
 // Client represents a client for the webOS developer API.
 type Client struct {
-	client  *http.Client
-	baseURL string
-	token   string
+	client    *http.Client
+	baseURL   string
+	token     string
+	userAgent string
 }
 
 // Response represents the structure of a webOS developer API response.
@@ -60,6 +61,9 @@ func (c *Client) request(ctx context.Context, p string) (*Response, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return nil, err
+	}
+	if c.userAgent != "" {
+		req.Header.Set("User-Agent", c.userAgent)
 	}
 
 	res, err := c.client.Do(req)

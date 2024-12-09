@@ -2,8 +2,6 @@ package webosdev
 
 import (
 	"time"
-
-	"gabe565.com/utils/httpx"
 )
 
 // Option defines a function that configures a Client instance.
@@ -40,6 +38,6 @@ func WithTimeout(timeout time.Duration) Option {
 // WithUserAgent returns an Option that sets the User-Agent string to be used for HTTP requests made by a Client.
 func WithUserAgent(userAgent string) Option {
 	return func(c *Client) {
-		c.client.Transport = httpx.NewUserAgentTransport(nil, userAgent)
+		c.userAgent = userAgent
 	}
 }
