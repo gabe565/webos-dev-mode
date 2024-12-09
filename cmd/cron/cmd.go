@@ -4,8 +4,10 @@ import (
 	"log/slog"
 	"time"
 
+	"gabe565.com/utils/cobrax"
 	"gabe565.com/webos-dev-mode/cmd/extend"
 	"gabe565.com/webos-dev-mode/internal/config"
+	"gabe565.com/webos-dev-mode/pkg/webosdev"
 	"github.com/spf13/cobra"
 )
 
@@ -25,13 +27,17 @@ func run(cmd *cobra.Command, _ []string) error {
 	}
 	cmd.SilenceUsage = true
 
-	if err := extend.Extend(cmd.Context(), conf); err != nil {
-		return err
-	}
+	timer := time.NewTimer(0)
+	defer timer.Stop()
 
-	ticker := time.NewTicker(conf.CronInterval)
-	for range ticker.C {
-		if err := extend.Extend(cmd.Context(), conf); err != nil {
+	for range timer.C {
+		timer.Reset(conf.CronInterval)
+
+		if err := extend.Extend(cmd.Context(),
+			webosdev.WithSessionToken(conf.Token),
+			webosdev.WithTimeout(conf.RequestTimeout),
+			webosdev.WithUserAgent(cobrax.BuildUserAgent(cmd)),
+		); err != nil {
 			slog.Error("Extend failed", "error", err)
 		}
 	}
