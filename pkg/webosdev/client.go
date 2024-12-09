@@ -105,9 +105,14 @@ func (c *Client) CheckExpiration(ctx context.Context) (time.Duration, error) {
 		return 0, err
 	}
 
-	parts := strings.Split(decoded.ErrorMessage, ":")
+	return ParseDuration(decoded.ErrorMessage)
+}
+
+// ParseDuration parses a duration formatted as "H:M:S"
+func ParseDuration(str string) (time.Duration, error) {
+	parts := strings.Split(str, ":")
 	if len(parts) != 3 {
-		return 0, fmt.Errorf("%w: %s", ErrInvalidTimestamp, decoded.ErrorMessage)
+		return 0, fmt.Errorf("%w: %s", ErrInvalidTimestamp, str)
 	}
 
 	hours, err := strconv.Atoi(parts[0])
