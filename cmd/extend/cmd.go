@@ -17,6 +17,7 @@ func New() *cobra.Command {
 		Use:   "extend",
 		Short: "Extend a dev mode session",
 		RunE:  run,
+		Args:  cobra.NoArgs,
 	}
 	return cmd
 }

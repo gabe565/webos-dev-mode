@@ -14,6 +14,7 @@ func New() *cobra.Command {
 		Use:   "cron",
 		Short: "Extends dev mode session on a given interval",
 		RunE:  run,
+		Args:  cobra.NoArgs,
 	}
 	return cmd
 }
