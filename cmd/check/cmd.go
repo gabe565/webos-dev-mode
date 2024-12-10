@@ -15,6 +15,8 @@ func New() *cobra.Command {
 		Short: "Check the current dev mode session expiration",
 		RunE:  run,
 		Args:  cobra.NoArgs,
+
+		ValidArgsFunction: cobra.NoFileCompletions,
 	}
 	return cmd
 }

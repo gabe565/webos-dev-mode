@@ -18,6 +18,8 @@ func New() *cobra.Command {
 		Short: "Extend a dev mode session",
 		RunE:  run,
 		Args:  cobra.NoArgs,
+
+		ValidArgsFunction: cobra.NoFileCompletions,
 	}
 	return cmd
 }

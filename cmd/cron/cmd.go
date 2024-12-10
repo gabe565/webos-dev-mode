@@ -15,6 +15,8 @@ func New() *cobra.Command {
 		Short: "Extends dev mode session on a given interval",
 		RunE:  run,
 		Args:  cobra.NoArgs,
+
+		ValidArgsFunction: cobra.NoFileCompletions,
 	}
 	return cmd
 }
