@@ -1,4 +1,7 @@
 # webOS Dev Mode CLI
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/gabe565/webos-dev-mode)](https://github.com/gabe565/webos-dev-mode/releases)
+[![Build](https://github.com/gabe565/webos-dev-mode/actions/workflows/build.yml/badge.svg)](https://github.com/gabe565/webos-dev-mode/actions/workflows/build.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gabe565/webos-dev-mode)](https://goreportcard.com/report/github.com/gabe565/webos-dev-mode)
 
 A command-line tool to extend the webOS dev mode session timer.
 
