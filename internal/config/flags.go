@@ -19,7 +19,7 @@ func (c *Config) RegisterFlags(cmd *cobra.Command) {
 	fs.DurationVar(&c.RequestTimeout, FlagRequestTimeout, c.RequestTimeout, "HTTP request timeout")
 
 	if cmd, _, err := cmd.Find([]string{"cron"}); err == nil {
-		cmd.Flags().DurationVar(&c.CronInterval, FlagInterval, c.CronInterval, "Extend cron interval")
+		cmd.Flags().DurationVarP(&c.CronInterval, FlagInterval, "i", c.CronInterval, "Extend cron interval")
 	} else {
 		panic(err)
 	}

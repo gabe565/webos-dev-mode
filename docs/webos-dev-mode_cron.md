@@ -10,7 +10,7 @@ webos-dev-mode cron [flags]
 
 ```
   -h, --help                help for cron
-      --interval duration   Extend cron interval (default 24h0m0s)
+  -i, --interval duration   Extend cron interval (default 24h0m0s)
 ```
 
 ### Options inherited from parent commands
