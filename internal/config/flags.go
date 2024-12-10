@@ -3,6 +3,8 @@ package config
 import "github.com/spf13/cobra"
 
 const (
+	FlagBaseURL        = "base-url"
+	FlagInsecure       = "insecure"
 	FlagToken          = "token"
 	FlagInterval       = "interval"
 	FlagRequestTimeout = "request-timeout"
@@ -11,6 +13,8 @@ const (
 
 func (c *Config) RegisterFlags(cmd *cobra.Command) {
 	fs := cmd.PersistentFlags()
+	fs.StringVar(&c.BaseURL, FlagBaseURL, c.BaseURL, "Base URL of the API")
+	fs.BoolVarP(&c.Insecure, FlagInsecure, "k", c.Insecure, "Skip TLS verification")
 	fs.StringVarP(&c.Token, FlagToken, "t", c.Token, "Session token")
 	fs.DurationVar(&c.RequestTimeout, FlagRequestTimeout, c.RequestTimeout, "HTTP request timeout")
 

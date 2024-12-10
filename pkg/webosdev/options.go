@@ -1,6 +1,8 @@
 package webosdev
 
 import (
+	"crypto/tls"
+	"net/http"
 	"time"
 )
 
@@ -20,7 +22,7 @@ func WithSessionToken(token string) Option {
 func WithBaseURL(baseURL string) Option {
 	return func(c *Client) {
 		if baseURL == "" {
-			c.baseURL = defaultBaseURL
+			c.baseURL = DefaultBaseURL
 		} else {
 			c.baseURL = baseURL
 		}
@@ -39,5 +41,16 @@ func WithTimeout(timeout time.Duration) Option {
 func WithUserAgent(userAgent string) Option {
 	return func(c *Client) {
 		c.userAgent = userAgent
+	}
+}
+
+// WithInsecureSkipVerify returns an Option that toggles TLS verification for HTTP requests made by a Client.
+func WithInsecureSkipVerify(insecureSkipVerify bool) Option {
+	return func(c *Client) {
+		if c.client.Transport == nil {
+			c.client.Transport = http.DefaultTransport.(*http.Transport).Clone()
+		}
+		//nolint:gosec
+		c.client.Transport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: insecureSkipVerify}
 	}
 }

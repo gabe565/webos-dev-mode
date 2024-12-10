@@ -5,7 +5,9 @@ webOS dev mode tools
 ### Options
 
 ```
+      --base-url string            Base URL of the API (default "https://developer.lge.com")
   -h, --help                       help for webos-dev-mode
+  -k, --insecure                   Skip TLS verification
       --request-timeout duration   HTTP request timeout (default 1m0s)
   -t, --token string               Session token
   -v, --version                    version for webos-dev-mode

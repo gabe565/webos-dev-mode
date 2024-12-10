@@ -16,6 +16,8 @@ webos-dev-mode check [flags]
 ### Options inherited from parent commands
 
 ```
+      --base-url string            Base URL of the API (default "https://developer.lge.com")
+  -k, --insecure                   Skip TLS verification
       --request-timeout duration   HTTP request timeout (default 1m0s)
   -t, --token string               Session token
 ```

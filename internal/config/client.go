@@ -8,6 +8,8 @@ import (
 
 func (c *Config) NewClient(cmd *cobra.Command) *webosdev.Client {
 	return webosdev.NewClient(
+		webosdev.WithBaseURL(c.BaseURL),
+		webosdev.WithInsecureSkipVerify(c.Insecure),
 		webosdev.WithSessionToken(c.Token),
 		webosdev.WithTimeout(c.RequestTimeout),
 		webosdev.WithUserAgent(cobrax.BuildUserAgent(cmd)),

@@ -15,14 +15,14 @@ import (
 	"time"
 )
 
-const defaultBaseURL = "https://developer.lge.com"
+const DefaultBaseURL = "https://developer.lge.com"
 
 // NewClient creates a Client for interacting with the webOS developer API.
 // Optional configuration can be provided via Option functions.
 func NewClient(opts ...Option) *Client {
 	c := &Client{
 		client:  &http.Client{},
-		baseURL: defaultBaseURL,
+		baseURL: DefaultBaseURL,
 	}
 	for _, opt := range opts {
 		opt(c)
