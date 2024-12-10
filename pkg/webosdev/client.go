@@ -38,8 +38,8 @@ type Client struct {
 	userAgent string
 }
 
-// Response represents the structure of a webOS developer API response.
-type Response struct {
+// response represents the structure of a webOS developer API response.
+type response struct {
 	Result       string `json:"result"`
 	ErrorCode    string `json:"errorCode"`
 	ErrorMessage string `json:"errorMsg"`
@@ -48,7 +48,7 @@ type Response struct {
 // ErrRequestFailed indicates that an API request returned an error.
 var ErrRequestFailed = errors.New("request failed")
 
-func (c *Client) request(ctx context.Context, p string) (*Response, error) {
+func (c *Client) request(ctx context.Context, p string) (*response, error) {
 	u, err := url.Parse(c.baseURL)
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (c *Client) request(ctx context.Context, p string) (*Response, error) {
 		return nil, fmt.Errorf("%w: %s", ErrRequestFailed, res.Status)
 	}
 
-	var decoded *Response
+	var decoded *response
 	if err := json.NewDecoder(res.Body).Decode(&decoded); err != nil {
 		return decoded, err
 	}

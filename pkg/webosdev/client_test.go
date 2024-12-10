@@ -31,13 +31,13 @@ func TestClient_request(t *testing.T) {
 	tests := []struct {
 		name    string
 		emuRes  emuResponse
-		want    *Response
+		want    *response
 		wantErr require.ErrorAssertionFunc
 	}{
 		{
 			"success",
 			emuResponse{body: `{"result":"success","errorCode":"200","errorMsg":"GNL"}`},
-			&Response{Result: "success", ErrorCode: "200", ErrorMessage: "GNL"},
+			&response{Result: "success", ErrorCode: "200", ErrorMessage: "GNL"},
 			require.NoError,
 		},
 		{"failure", emuResponse{status: http.StatusInternalServerError}, nil, require.Error},
