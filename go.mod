@@ -1,6 +1,6 @@
 module gabe565.com/webos-dev-mode
 
-go 1.23.4
+go 1.24.4
 
 require (
 	gabe565.com/utils v0.0.0-20241116061915-abe2278ecd5c
